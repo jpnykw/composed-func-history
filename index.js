@@ -53,21 +53,18 @@
                     return cell.className.includes(`${x}-${y}`)
                 })[0];
 
-                console.log(beforePlayer);
                 beforePlayer.classList.remove('player');
                 currentPlayer.classList.add('player');
-                console.log(game.history.map(f => f.toString()[0]))
 
-                let statusBefore = 'i';
-                let statusAfter = '';
+                let [g, h] = ['i', ''];
                 game.history.map(f => {
-                    const name = f.toString()[0];
-                    statusBefore = `${name}(${statusBefore})`;
-                    statusAfter = statusAfter === '' ? name : `${name} ∘ ${statusAfter}`;
+                    g = `${f}(${g})`;
+                    h = h === '' ? f : `${f} ∘ ${h}`;
                 });
 
-                status[0].innerText = `= ${statusBefore}`;
-                status[1].innerText = `= (${statusAfter})(i)`;
+                status[0].innerText = `= ${g}`;
+                status[1].innerText = `= (${h})(i)`;
+                console.log(game);
             }
         })
 

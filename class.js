@@ -35,7 +35,7 @@ class Game {
     
     update(method) {
         if (method.bind(this)()) return;
-        this.history.push(method);
+        this.history.push(method.toString()[0]);
         console.log('moved');
     }
 
@@ -45,14 +45,15 @@ class Game {
     }
 
     calc() {
+        // Reset
         this.px = this.player.x;
         this.py = this.player.y;
+        // Calculate
         this.history.map(f => {
-            const way = f.toString()[0];
-            if (way === 'l') this.px -= 1;
-            if (way === 'r') this.px += 1;
-            if (way === 'u') this.py -= 1;
-            if (way === 'd') this.py += 1;
+            if (f === 'l') this.px -= 1;
+            if (f === 'r') this.px += 1;
+            if (f === 'u') this.py -= 1;
+            if (f === 'd') this.py += 1;
         })
     }
 }
