@@ -15,39 +15,31 @@ class Game {
 
     // Up
     u() {
-        if (this.py === 0) return false;
-        return true;
+        return this.py === 0;
     }
 
     // Down
     d() {
-        if (this.py === this.h - 1) return false;
-        return true;
+        return this.py === this.h - 1;
     }
 
     // Left
     l() {
-        if (this.px === 0) return false;
-        return true;
+        return this.px === 0;
     }
 
     // Right
     r() {
-        if (this.px === this.w - 1) return false;
-        return true;
+        return this.px === this.w - 1;
     }
     
     update(method) {
-        const bindMethod = method.bind(this);
-        const result = bindMethod();
-        if (!result) return;
-
+        if (method.bind(this)()) return;
         this.history.push(method);
         console.log('moved');
     }
 
     undo() {
-        const lastMoved = this.history[this.history.length - 1];
         this.history.pop();
         console.log('undo');
     }

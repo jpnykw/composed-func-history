@@ -61,9 +61,9 @@
                 let statusBefore = 'i';
                 let statusAfter = '';
                 game.history.map(f => {
-                    let fName = f.toString()[0];
-                    statusBefore = `${fName}(${statusBefore})`;
-                    statusAfter = statusAfter === '' ? fName : `${fName} ∘ ${statusAfter}`;
+                    const name = f.toString()[0];
+                    statusBefore = `${name}(${statusBefore})`;
+                    statusAfter = statusAfter === '' ? name : `${name} ∘ ${statusAfter}`;
                 });
 
                 status[0].innerText = `= ${statusBefore}`;
