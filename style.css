@@ -1,0 +1,19 @@
+.line {
+    display: flex;
+}
+
+.cell {
+    border: solid 2px black;
+    height: 60px;
+    width: 60px;
+}
+
+.player {
+    background: #ee3322;
+}
+
+.status {
+    margin-bottom: 10px;
+    margin-left: 5px;
+    font-size: 40px;
+}
