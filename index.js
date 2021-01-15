@@ -1,6 +1,4 @@
 (() => {
-    const buffer = [];
-
     window.addEventListener('DOMContentLoaded', () => {
         const [width, height] = [15, 10];
         const player = new Position(Math.floor(Math.random() * width), Math.floor(Math.random() * height));
@@ -60,12 +58,11 @@
             if (document.activeElement !== document.body) return;
             const beforeGame = Object.assign({}, game);
 
-            buffer[event.keyCode] = true;
-            if (buffer[37]) game.update(game.l);
-            if (buffer[39]) game.update(game.r);
-            if (buffer[38]) game.update(game.u);
-            if (buffer[40]) game.update(game.d);
-            if (buffer[90]) game.undo();
+            if (event.keyCode === 37) game.update(game.l);
+            if (event.keyCode === 39) game.update(game.r);
+            if (event.keyCode === 38) game.update(game.u);
+            if (event.keyCode === 40) game.update(game.d);
+            if (event.keyCode === 90) game.undo();
             console.log(game.history);
 
             // Calculate
@@ -73,10 +70,6 @@
 
             // Update screen
             updateScreen(beforeGame);
-        });
-
-        document.body.addEventListener('keyup', (event) => {
-            buffer[event.keyCode] = false;
         });
 
         status[0].addEventListener('keydown', (event) => {
