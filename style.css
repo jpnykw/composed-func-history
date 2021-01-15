@@ -1,3 +1,7 @@
+body {
+    overflow: hidden;
+}
+
 .line {
     display: flex;
 }
@@ -12,8 +16,13 @@
     background: #ee3322;
 }
 
-.status {
+input {
+    border: none;
+    width: 100%;
+}
+
+.status, input {
     margin-bottom: 10px;
     margin-left: 5px;
-    font-size: 40px;
+    font-size: 34px;
 }

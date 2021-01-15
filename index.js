@@ -2,44 +2,16 @@
     const buffer = [];
 
     window.addEventListener('DOMContentLoaded', () => {
-        const player = new Position(0, 0);
-        const size = new Position(8, 4);
+        const [width, height] = [15, 10];
+        const player = new Position(Math.floor(Math.random() * width), Math.floor(Math.random() * height));
+        const size = new Position(width, height);
         const game = new Game(player, size);
 
         // Draw initialize
         const stage = document.querySelector('.stage');
-        const status = document.querySelectorAll('.status');
+        const status = [...document.querySelectorAll('.status')].map(status => status.querySelector('input'));
 
-        for (let y = 0; y < size.y; y++) {
-            const line = document.createElement('div');
-            line.classList.add('line');
-
-            for (let x = 0; x < size.x; x++) {
-                const cell = document.createElement('div');
-                cell.classList.add('cell');
-                cell.classList.add(`${x}-${y}`);
-                if (player.x === x && player.y === y) cell.classList.add('player');
-                line.appendChild(cell);
-            }
-
-            stage.appendChild(line);
-        }
-
-        // Controller
-        document.body.addEventListener('keydown', (event) => {
-            const beforeGame = Object.assign({}, game);
-
-            buffer[event.keyCode] = true;
-            if (buffer[37]) game.update(game.l);
-            if (buffer[39]) game.update(game.r);
-            if (buffer[38]) game.update(game.u);
-            if (buffer[40]) game.update(game.d);
-            if (buffer[17] && buffer[90]) game.undo();
-
-            // Calculate
-            game.calc();
-
-            // Update screen
+        const updateScreen = (beforeGame) => {
             if (beforeGame !== game) {
                 const beforePlayer = [...document.querySelectorAll('.cell')].filter(cell => {
                     const x = beforeGame.px;
@@ -62,14 +34,67 @@
                     h = h === '' ? f : `${f} ∘ ${h}`;
                 });
 
-                status[0].innerText = `= ${g}`;
-                status[1].innerText = `= (${h})(i)`;
+                status[0].value = `${g}`;
+                status[1].value = `(${h})(i)`;
                 console.log(game);
             }
-        })
+        }
+
+        for (let y = 0; y < size.y; y++) {
+            const line = document.createElement('div');
+            line.classList.add('line');
+
+            for (let x = 0; x < size.x; x++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.classList.add(`${x}-${y}`);
+                if (player.x === x && player.y === y) cell.classList.add('player');
+                line.appendChild(cell);
+            }
+
+            stage.appendChild(line);
+        }
+
+        // Controller
+        document.body.addEventListener('keydown', (event) => {
+            if (document.activeElement !== document.body) return;
+            const beforeGame = Object.assign({}, game);
+
+            buffer[event.keyCode] = true;
+            if (buffer[37]) game.update(game.l);
+            if (buffer[39]) game.update(game.r);
+            if (buffer[38]) game.update(game.u);
+            if (buffer[40]) game.update(game.d);
+            if (buffer[90]) game.undo();
+            console.log(game.history);
+
+            // Calculate
+            game.calc();
+
+            // Update screen
+            updateScreen(beforeGame);
+        });
 
         document.body.addEventListener('keyup', (event) => {
             buffer[event.keyCode] = false;
-        })
+        });
+
+        status[0].addEventListener('keydown', (event) => {
+            if (event.keyCode === 13) {
+                const history = status[0].value.replace(/\(/g, ',').replace(/\)/g, '').split(',');
+                const beforeGame = Object.assign({}, game);
+
+                // Overwrite history
+                history.pop();
+                console.log(history);
+                game.history = history;
+
+                // Calculate
+                game.calc();
+
+                // Update screen
+                updateScreen(beforeGame);
+            }
+        });
     })
 })()
